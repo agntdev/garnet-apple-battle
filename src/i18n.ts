@@ -11,6 +11,8 @@ export const RU = {
     startQuiz: "Начать викторину",
     endSession: "Завершить сессию",
     exportCsv: "Скачать CSV",
+    previous: "Предыдущие",
+    next: "Следующие",
   },
   help: "Нажмите /start, чтобы открыть меню викторины.\n\nУчастники входят по QR-коду мероприятия и отвечают на каждый вопрос за 15 секунд.\n\nАдминистратор может добавить вопросы, запустить викторину командой /start_quiz и посмотреть закрытые результаты командой /results.",
   ownerUnset: "Доступ администратора ещё не настроен.",
@@ -38,12 +40,13 @@ export const RU = {
   noSession: "Викторина ещё не была запущена.",
   noParticipants: "К этой викторине ещё никто не присоединился.",
   resultsTitle: "Результаты викторины",
-  showingTop: (shown: number, total: number) => `\n\nПоказаны первые ${shown} из ${total}. Скачайте CSV, чтобы увидеть полный рейтинг.`,
+  resultsPage: (page: number, total: number) => `Результаты викторины — страница ${page} из ${total}`,
+  resultRow: (place: number, name: string, correct: number, time: string) => `${place}. ${name} — ${correct} правильных — ${time}`,
   noExport: "Пока нет результатов для выгрузки.",
   unknown: "Не удалось понять сообщение. Нажмите /help.",
   participantName: "Участник",
   ownerName: "Администратор",
-  csvHeader: "Место,Участник,Баллы,Общее время ответа (секунды)",
+  csvHeader: "Место,Участник,Правильных ответов,Общее время ответа (мм:сс)",
 } as const;
 
 export const ownerMessages = { unset: RU.ownerUnset, denied: RU.ownerOnly };
