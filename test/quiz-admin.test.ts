@@ -68,26 +68,34 @@ describe("quiz administration", () => {
     expect(text).toBe("Результаты викторины\n\n1. Лидер — 6 правильных — 01:30\n2. Быстрый — 5 правильных — 00:09\n3. Медленный — 5 правильных — 01:01");
   });
 
-  it("saves each entered question and never treats /start or /cancel as question text", async () => {
+  it("appends question 11 onward without changing the first ten or treating controls as questions", async () => {
     process.env.ADMIN_CHAT_ID = "100";
     const storage = new MemorySessionStorage<unknown>();
+    const originalQuestions = questions.map((question) => ({ ...question, options: [...question.options] as QuizQuestion["options"] }));
+    // The memory adapter deliberately keeps object references, so seed it with
+    // a distinct copy to prove appending cannot mutate questions 1–10.
+    await storage.write("garnet-apple-battle:quiz-state", { template: originalQuestions.map((question) => ({ ...question, options: [...question.options] as QuizQuestion["options"] })) });
     const result = await runSpec(await buildBot("test-token", { storage: storage as never }), {
-      name: "question entry controls", strict: false,
+      name: "append question entry controls", strict: false,
       steps: [
         { send: { callback: "quiz:setup", userId: 100 }, expect: [] },
-        { send: { text: "Столица? | Москва | Рим | Минск | Париж | 1", userId: 100 }, expect: [] },
+        { send: { text: "Дополнительный? | Москва | Рим | Минск | Париж | 1", userId: 100 }, expect: [] },
         { send: { callback: "quiz:setup:next", userId: 100 }, expect: [] },
         { send: { text: "/start", userId: 100 }, expect: [] },
         { send: { text: "/cancel", userId: 100 }, expect: [] },
         { send: { callback: "quiz:setup", userId: 100 }, expect: [] },
-        { send: { text: "Цвет? | Красный | Синий | Белый | Чёрный | 1", userId: 100 }, expect: [] },
+        { send: { text: "Ещё вопрос? | Красный | Синий | Белый | Чёрный | 1", userId: 100 }, expect: [] },
         { send: { callback: "quiz:setup:finish", userId: 100 }, expect: [] },
       ],
     });
     const saved = await storage.read("garnet-apple-battle:quiz-state") as QuizState;
     expect(result.ok).toBe(true);
-    expect(saved.template).toHaveLength(2);
-    expect(saved.template[0].prompt).toBe("Столица?");
+    expect(saved.template).toHaveLength(12);
+    expect(saved.template.slice(0, 10)).toEqual(originalQuestions);
+    expect(saved.template[10].prompt).toBe("Дополнительный?");
+    expect(saved.template[11].prompt).toBe("Ещё вопрос?");
+    const prompt = result.steps[0].captured.find((call) => call.method === "editMessageText");
+    expect(prompt?.payload.text).toBe("Отправьте вопрос 11 в формате: Вопрос | вариант A | вариант B | вариант C | вариант D | номер правильного ответа");
     const savedMessage = result.steps[1].captured.find((call) => call.method === "sendMessage");
     expect(savedMessage?.payload.reply_markup).toEqual({
       inline_keyboard: [
@@ -96,6 +104,6 @@ describe("quiz administration", () => {
       ],
     });
     const finishMessage = result.steps[7].captured.find((call) => call.method === "editMessageText");
-    expect(finishMessage?.payload.text).toBe("Добавление вопросов завершено. Сохранённые вопросы готовы в управлении викториной.");
+    expect(finishMessage?.payload.text).toBe("Все 10 вопросов готовы. Начните викторину, когда будете готовы.");
   });
 });
