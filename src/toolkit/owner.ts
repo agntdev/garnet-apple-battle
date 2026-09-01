@@ -98,13 +98,14 @@ export function isOwner(ctx: {
  * On deny: answers callback (when present) and replies in plain language.
  * Does not throw — callers should `return` when this is false.
  */
-export async function requireOwner(ctx: OwnerAwareCtx): Promise<boolean> {
+export async function requireOwner(
+  ctx: OwnerAwareCtx,
+  messages?: { unset: string; denied: string },
+): Promise<boolean> {
   if (isOwner(ctx)) return true;
 
   const unset = adminChatId(ctx) === undefined;
-  const text = unset
-    ? "Owner access isn't set up yet."
-    : "Only the owner can do that.";
+  const text = unset ? (messages?.unset ?? "Owner access isn't set up yet.") : (messages?.denied ?? "Only the owner can do that.");
 
   try {
     if (ctx.answerCallbackQuery) {

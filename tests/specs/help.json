@@ -8,7 +8,7 @@
           {
             "method": "sendMessage",
             "payload": {
-              "text": "Tap /start to open the quiz menu.\n\nParticipants join from the event QR code and answer each question within 15 seconds.\n\nThe owner can configure questions, start a session with /start_quiz, and view private results with /results."
+              "text": "Нажмите /start, чтобы открыть меню викторины.\n\nУчастники входят по QR-коду мероприятия и отвечают на каждый вопрос за 15 секунд.\n\nАдминистратор может добавить вопросы, запустить викторину командой /start_quiz и посмотреть закрытые результаты командой /results."
             }
           }
         ]
