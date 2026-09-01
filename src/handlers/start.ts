@@ -1,6 +1,6 @@
 import { Composer } from "grammy";
 import type { Ctx } from "../bot.js";
-import { inlineButton, inlineKeyboard, isOwner, mainMenuItems } from "../toolkit/index.js";
+import { inlineButton, inlineKeyboard, isOwner } from "../toolkit/index.js";
 import { RU } from "../i18n.js";
 
 // The /start handler renders the bot's MAIN MENU — the primary way users operate
@@ -10,10 +10,19 @@ import { RU } from "../i18n.js";
 // file to add a feature. Send ONE message — no placeholder line above the menu.
 const composer = new Composer<Ctx>();
 
-function menuFor(ctx: Ctx) {
-  const owner = isOwner(ctx);
-  const items = mainMenuItems().filter((item) => owner || (item.data !== "quiz:manage" && item.data !== "quiz:results"));
-  return inlineKeyboard([...items.map((item) => [inlineButton(item.label, item.data)]), [inlineButton(RU.menu.help, "menu:help")]]);
+export function menuFor(ctx: Ctx) {
+  if (isOwner(ctx)) {
+    return inlineKeyboard([
+      [inlineButton(RU.menu.startQuiz, "quiz:start")],
+      [inlineButton(RU.menu.results, "quiz:results")],
+      [inlineButton(RU.menu.manage, "quiz:manage")],
+      [inlineButton("❓ Помощь", "menu:help")],
+    ]);
+  }
+  return inlineKeyboard([
+    [inlineButton(RU.menu.join, "join:qr")],
+    [inlineButton(RU.menu.help, "menu:help")],
+  ]);
 }
 
 composer.command("start", async (ctx) => {

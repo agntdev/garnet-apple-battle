@@ -1,10 +1,9 @@
 import { Composer, InputFile } from "grammy";
 import type { Ctx } from "../bot.js";
-import { inlineButton, inlineKeyboard, registerMainMenuItem, requireOwner } from "../toolkit/index.js";
+import { inlineButton, inlineKeyboard, requireOwner } from "../toolkit/index.js";
 import { formatResponseTime, rankedParticipants, readQuizState, resultsCsv } from "../quiz-data.js";
 import { RU, ownerMessages } from "../i18n.js";
 
-registerMainMenuItem({ label: RU.menu.results, data: "quiz:results", order: 30 });
 const composer = new Composer<Ctx>();
 
 const MAX_RESULT_MESSAGE_LENGTH = 4_096;

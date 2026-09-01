@@ -1,6 +1,6 @@
 import { Composer } from "grammy";
 import type { Ctx } from "../bot.js";
-import { inlineButton, inlineKeyboard } from "../toolkit/index.js";
+import { inlineButton, inlineKeyboard, isOwner } from "../toolkit/index.js";
 import { RU } from "../i18n.js";
 
 // /help — plain-language explanation for non-technical users. This bot is
@@ -9,17 +9,16 @@ import { RU } from "../i18n.js";
 // main menu (`menu:help`). Enhance the copy for your specific bot; keep it short.
 const composer = new Composer<Ctx>();
 
-const HELP = RU.help;
-
 const backToMenu = inlineKeyboard([[inlineButton(RU.menu.back, "menu:main")]]);
+const helpFor = (ctx: Ctx) => isOwner(ctx) ? RU.adminHelp : RU.help;
 
 composer.command("help", async (ctx) => {
-  await ctx.reply(HELP);
+  await ctx.reply(helpFor(ctx));
 });
 
 composer.callbackQuery("menu:help", async (ctx) => {
   await ctx.answerCallbackQuery();
-  await ctx.editMessageText(HELP, { reply_markup: backToMenu });
+  await ctx.editMessageText(helpFor(ctx), { reply_markup: backToMenu });
 });
 
 export default composer;
