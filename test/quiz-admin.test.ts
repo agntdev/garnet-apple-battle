@@ -104,6 +104,6 @@ describe("quiz administration", () => {
       ],
     });
     const finishMessage = result.steps[7].captured.find((call) => call.method === "editMessageText");
-    expect(finishMessage?.payload.text).toBe("Все 10 вопросов готовы. Начните викторину, когда будете готовы.");
+    expect(finishMessage?.payload.text).toBe("Все 12 вопросов готовы. Начните викторину, когда будете готовы.");
   });
 });

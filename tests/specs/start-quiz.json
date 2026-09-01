@@ -32,5 +32,19 @@
         ]
       }
     ]
+  },
+  {
+    "name": "Finishing question entry remains restricted when owner access is not configured",
+    "steps": [
+      {
+        "send": { "callback": "quiz:setup:finish" },
+        "expect": [
+          {
+            "method": "sendMessage",
+            "payload": { "text": "Доступ администратора ещё не настроен." }
+          }
+        ]
+      }
+    ]
   }
 ]

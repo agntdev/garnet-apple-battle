@@ -7,7 +7,8 @@ import { RU } from "./i18n.js";
 // bot grows. Durable domain data must NOT live here — use the toolkit's
 // persistent storage (see AGENTS.md).
 export interface Session {
-  quizSetup?: { questions: import("./quiz-data.js").QuizQuestion[] };
+  /** Ephemeral position in the admin's append-only question flow. */
+  quizSetup?: { nextQuestionNumber: number };
 }
 
 export type Ctx = BotContext<Session>;
