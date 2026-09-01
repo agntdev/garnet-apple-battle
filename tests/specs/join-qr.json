@@ -7,7 +7,7 @@
           {
             "method": "sendMessage",
             "payload": {
-              "text": "That quiz link isn't valid or has expired. Scan the current event QR code and try again."
+              "text": "Эта ссылка недействительна или срок её действия истёк. Отсканируйте актуальный QR-код мероприятия."
             }
           }
         ],

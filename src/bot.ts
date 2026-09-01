@@ -1,6 +1,7 @@
 import { Composer } from "grammy";
 import { createBot, type BotContext, type CreateBotOptions } from "./toolkit/index.js";
 import type { StorageAdapter } from "grammy";
+import { RU } from "./i18n.js";
 
 // The per-chat session shape (ephemeral conversation state only). Extend as the
 // bot grows. Durable domain data must NOT live here — use the toolkit's
@@ -53,7 +54,7 @@ export async function buildBot(token: string, opts: BuildBotOptions = {}) {
   const handlers = opts.handlers ?? (await loadHandlersFromDisk());
   for (const h of handlers) bot.use(h);
 
-  bot.on("message", (ctx) => ctx.reply("Sorry, I didn't understand that. Try /help."));
+  bot.on("message", (ctx) => ctx.reply(RU.unknown));
 
   return bot;
 }

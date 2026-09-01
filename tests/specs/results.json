@@ -7,7 +7,7 @@
           {
             "method": "sendMessage",
             "payload": {
-              "text": "Owner access isn't set up yet."
+              "text": "Доступ администратора ещё не настроен."
             }
           }
         ],
