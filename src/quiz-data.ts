@@ -2,7 +2,6 @@ import type { Ctx } from "./bot.js";
 import { RU } from "./i18n.js";
 
 export const QUESTION_SECONDS = 15;
-export const QUESTION_COUNT = 10;
 const STATE_KEY = "garnet-apple-battle:quiz-state";
 export interface QuizQuestion { prompt: string; options: [string, string, string, string]; correct: number; }
 export interface Answer { question: number; selected: number | null; elapsedMs: number; onTime: boolean; }
@@ -13,7 +12,7 @@ export async function readQuizState(ctx: Ctx): Promise<QuizState> { return ((awa
 export async function writeQuizState(ctx: Ctx, state: QuizState): Promise<void> { await ctx.persistentStore.write(STATE_KEY, state); }
 export function displayName(ctx: Ctx): string { const from = ctx.from; return from ? ([from.first_name, from.last_name].filter(Boolean).join(" ") || RU.participantName) : RU.participantName; }
 export function secureToken(): string { return crypto.randomUUID().replace(/-/g, "").slice(0, 20); }
-export function publicQuestion(question: QuizQuestion, number: number): string { return `${RU.question(number, QUESTION_COUNT, QUESTION_SECONDS)}\n\n${question.prompt}`; }
+export function publicQuestion(question: QuizQuestion, number: number, total: number): string { return `${RU.question(number, total, QUESTION_SECONDS)}\n\n${question.prompt}`; }
 export function formatResponseTime(totalMs: number): string {
   const totalSeconds = Math.max(0, Math.floor(totalMs / 1_000));
   const minutes = Math.floor(totalSeconds / 60);

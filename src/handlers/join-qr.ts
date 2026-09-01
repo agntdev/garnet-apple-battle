@@ -23,8 +23,9 @@ async function showQuestion(ctx: Ctx, participant: Participant, state: Awaited<R
   const question = session.questions[participant.questionIndex];
   if (!question) { await finish(ctx, participant, state, edit); return; }
   const payload = { reply_markup: questionKeyboard(participant.questionIndex, question.options) };
-  if (edit) await ctx.editMessageText(publicQuestion(question, participant.questionIndex + 1), payload);
-  else await ctx.reply(publicQuestion(question, participant.questionIndex + 1), payload);
+  const text = publicQuestion(question, participant.questionIndex + 1, session.questions.length);
+  if (edit) await ctx.editMessageText(text, payload);
+  else await ctx.reply(text, payload);
 }
 async function join(ctx: Ctx, token: string | undefined) {
   const state = await readQuizState(ctx); const session = state.session;
