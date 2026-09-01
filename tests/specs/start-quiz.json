@@ -16,5 +16,21 @@
         }
       }
     ]
+  },
+  {
+    "name": "Add questions remains an admin-only append entry point",
+    "steps": [
+      {
+        "send": { "callback": "quiz:setup" },
+        "expect": [
+          {
+            "method": "sendMessage",
+            "payload": {
+              "text": "Доступ администратора ещё не настроен."
+            }
+          }
+        ]
+      }
+    ]
   }
 ]

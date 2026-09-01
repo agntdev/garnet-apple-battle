@@ -34,7 +34,9 @@ export const RU = {
   manageLive: "Викторина идёт. Завершите сессию, когда мероприятие закончится.",
   manageReady: "Все 10 вопросов готовы. Начните викторину, когда будете готовы.",
   manageSetup: (saved: number, total: number) => `Добавьте ${total} вопросов перед запуском. Сейчас добавлено: ${saved} из ${total}.`,
-  questionPrompt: (number: number) => `Отправьте вопрос ${number} в формате:\nВопрос | вариант A | вариант B | вариант C | вариант D | номер правильного ответа\n\nУкажите номер правильного ответа: 1, 2, 3 или 4.`,
+  // Keep this prompt on one line: it is also the concise format users copy when
+  // adding a question to an existing quiz bank.
+  questionPrompt: (number: number) => `Отправьте вопрос ${number} в формате: Вопрос | вариант A | вариант B | вариант C | вариант D | номер правильного ответа`,
   questionFormatError: "Используйте формат: вопрос | вариант A | вариант B | вариант C | вариант D | номер правильного ответа. Каждый вариант — до 48 символов.",
   questionSaved: (saved: number) => `Вопрос ${saved} сохранён. Добавьте следующий вопрос или завершите добавление.`,
   allQuestionsSaved: "Все 10 вопросов сохранены. Начните викторину, когда будете готовы.",
