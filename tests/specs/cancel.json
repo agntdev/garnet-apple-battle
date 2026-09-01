@@ -1,0 +1,13 @@
+[
+  {
+    "name": "/cancel is handled as a command, not quiz text",
+    "steps": [
+      {
+        "send": { "text": "/cancel" },
+        "expect": [
+          { "method": "sendMessage", "payload": { "text": "Добавление вопросов отменено." } }
+        ]
+      }
+    ]
+  }
+]

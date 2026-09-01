@@ -29,7 +29,7 @@ describe("Russian interface and owner-only controls", () => {
 
   it("shows Russian administration controls only to the configured owner", async () => {
     await expect(menuLabels(100)).resolves.toEqual([
-      "Участвовать", "Управление викториной", "Результаты", "Помощь",
+      "▶️ Начать новую викторину", "🏆 Посмотреть результаты", "⚙️ Управление викториной", "❓ Помощь",
     ]);
   });
 
