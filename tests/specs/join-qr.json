@@ -7,7 +7,7 @@
           {
             "method": "sendMessage",
             "payload": {
-              "text": "Participant joins quiz session using a one-time QR code token"
+              "text": "That quiz link isn't valid or has expired. Scan the current event QR code and try again."
             }
           }
         ],

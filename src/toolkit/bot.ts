@@ -13,7 +13,10 @@ import {
 } from "./telemetry/reporter.js";
 
 /** Context for a toolkit bot carrying a typed session `S`. */
-export type BotContext<S extends object = Record<string, unknown>> = Context & SessionFlavor<S>;
+export type BotContext<S extends object = Record<string, unknown>> = Context & SessionFlavor<S> & {
+  /** Durable feature records, backed by the toolkit's selected storage adapter. */
+  persistentStore: StorageAdapter<unknown>;
+};
 
 export interface CreateBotOptions<S extends object> {
   /** Initial session value for a new chat. */
@@ -46,13 +49,18 @@ export function createBot<S extends object>(
   opts: CreateBotOptions<S>,
 ): Bot<BotContext<S>> {
   const bot = new Bot<BotContext<S>>(token);
+  const storage = resolveSessionStorage<S>(opts.storage);
   bot.use(
     session<S, BotContext<S>>({
       initial: opts.initial,
       // Auto-select: explicit adapter → Redis (REDIS_URL) → in-memory.
-      storage: resolveSessionStorage<S>(opts.storage),
+      storage,
     }),
   );
+  bot.use((ctx, next) => {
+    ctx.persistentStore = storage as unknown as StorageAdapter<unknown>;
+    return next();
+  });
   // Active-user reporting (agnt-api migration 00069). No-op unless the platform
   // injected BOT_TELEMETRY_* at deploy — so dev, the test harness, and old bots
   // are byte-for-byte unchanged. Records salted user hashes only; best-effort.
