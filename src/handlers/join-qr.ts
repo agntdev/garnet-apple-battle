@@ -44,7 +44,10 @@ composer.on("callback_query:data", async (ctx, next) => {
   if (!session || !session.active || !participant || participant.completedAt) { await ctx.editMessageText(RU.attemptInactive); return; }
   const index = Number(match[1]); if (index !== participant.questionIndex) { await ctx.editMessageText(RU.answerRecorded); return; }
   const elapsedMs = now() - participant.questionStartedAt;
-  if (elapsedMs > 15_000) participant.answers.push({ question: index, selected: null, elapsedMs: 15_000, onTime: false });
+  if (elapsedMs > 15_000) {
+    participant.answers.push({ question: index, selected: null, elapsedMs: 15_000, onTime: false });
+    participant.total_response_time += 15_000;
+  }
   else { const selected = Number(match[2]); participant.answers.push({ question: index, selected, elapsedMs, onTime: true }); participant.total_response_time += elapsedMs; if (session.questions[index].correct === selected) participant.score += 1; }
   participant.questionIndex += 1; participant.questionStartedAt = now(); await writeQuizState(ctx, state); await showQuestion(ctx, participant, state, true);
 });
