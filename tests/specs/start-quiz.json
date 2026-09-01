@@ -1,0 +1,20 @@
+[
+  {
+    "name": "/start_quiz",
+    "steps": [
+      {
+        "expect": [
+          {
+            "method": "sendMessage",
+            "payload": {
+              "text": "Admin-only command to start a new quiz session"
+            }
+          }
+        ],
+        "send": {
+          "text": "/start_quiz"
+        }
+      }
+    ]
+  }
+]
