@@ -1,0 +1,20 @@
+[
+  {
+    "name": "/results",
+    "steps": [
+      {
+        "expect": [
+          {
+            "method": "sendMessage",
+            "payload": {
+              "text": "Admin-only command to view quiz results"
+            }
+          }
+        ],
+        "send": {
+          "text": "/results"
+        }
+      }
+    ]
+  }
+]
