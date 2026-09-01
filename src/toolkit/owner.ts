@@ -31,7 +31,9 @@ export type OwnerAwareCtx = {
   env?: Record<string, unknown> | null;
   from?: { id: number } | undefined;
   chat?: { id: number } | undefined;
-  reply: (text: string, ...args: unknown[]) => unknown | Promise<unknown>;
+  // `any` is intentional here: grammY's optional reply parameters are more
+  // specific than an `unknown[]` rest parameter under strict function variance.
+  reply: (text: string, ...args: any[]) => unknown | Promise<unknown>;
   answerCallbackQuery?: (
     opts?: { text?: string; show_alert?: boolean },
   ) => unknown | Promise<unknown>;

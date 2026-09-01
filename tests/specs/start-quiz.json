@@ -7,7 +7,7 @@
           {
             "method": "sendMessage",
             "payload": {
-              "text": "Admin-only command to start a new quiz session"
+              "text": "Owner access isn't set up yet."
             }
           }
         ],
